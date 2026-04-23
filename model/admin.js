@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const { Schema } = mongoose
 const bcrypt = require('bcrypt');
+require('dotenv').config()
 
 const adminSchema = new Schema({
     name: {
@@ -25,7 +26,7 @@ adminSchema.pre('save', async function (next) {
     if(!this.isModified('password')){
         return next()
     }
-    const salt = await bcrypt.genSalt(10)
+    const salt = await bcrypt.genSalt(process.env.SALT_ROUNDS)
     this.password = await bcrypt.hash(this.password, salt)
     })
     adminSchema.methods.comparePassword = function (inputPassword){

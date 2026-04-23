@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT
 const {connectDB} = require("./config/databse")
 const publicRoutes = require("./routes/publicRoutes")
 const adminRoutes = require("./routes/adminRoutes") 
+require('dotenv').config()
 
 app.use(express.json())
 
