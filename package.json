@@ -1,0 +1,21 @@
+{
+  "name": "filmsapiv2",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "pitoy",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.15.0",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.3.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "midtrans-client": "^1.4.3",
+    "mongoose": "^9.3.0"
+  }
+}
