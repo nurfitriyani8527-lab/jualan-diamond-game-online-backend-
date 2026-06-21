@@ -7,6 +7,8 @@ const publicRoutes = require("./routes/publicRoutes")
 const adminRoutes = require("./routes/adminRoutes") 
 require('dotenv').config()
 
+connectDB()
+
 app.use(cors({
   origin: '*', // Bisa dari mana saja
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -14,8 +16,6 @@ app.use(cors({
 }));
 
 app.use(express.json())
-
-connectDB()
 
 app.use('/public', publicRoutes)
 app.use('/admin', adminRoutes)
