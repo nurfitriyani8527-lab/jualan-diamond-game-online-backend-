@@ -37,6 +37,7 @@ exports.getOrders = async (req,res) => {
     try {
         const { status,whatsapp } = req.query
         let order
+        let filter = {}
         if(status){
             order = await Order.find({
             status: { $regex: status, $options: "i" }
