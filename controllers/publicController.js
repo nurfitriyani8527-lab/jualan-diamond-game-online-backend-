@@ -35,14 +35,18 @@ exports.getProducts = async (req,res) => {
 
 exports.getOrders = async (req,res) => {
     try {
-        const { status } = req.query
+        const { status,whatsapp } = req.query
         let order
         if(status){
             order = await Order.find({
             status: { $regex: status, $options: "i" }
             })
-        }else{
-            order = await Order.find()
+        }
+        if (whatsapp) {
+            filter.whatsapp = whatsapp
+        }
+        else{
+            order = await Order.find(filter)
         }
         respon(res,200,true,"data status berhasil di temukan",order)
     } catch (error) {
