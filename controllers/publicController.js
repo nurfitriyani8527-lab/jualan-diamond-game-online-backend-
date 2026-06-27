@@ -33,25 +33,23 @@ exports.getProducts = async (req,res) => {
     }
 } // selesai
 
-exports.getOrders = async (req,res) => {
+exports.getOrders = async (req, res) => {
     try {
-        const { status,whatsapp } = req.query
-        let order
+        const { status, whatsapp } = req.query  // ← tambah whatsapp
         let filter = {}
-        if(status){
-            order = await Order.find({
-            status: { $regex: status, $options: "i" }
-            })
+
+        if (status) {
+            filter.status = { $regex: status, $options: "i" }
         }
-        if (whatsapp) {
-            filter.whatsapp = whatsapp
-        }
-        else{
-            order = await Order.find(filter)
-        }
-        respon(res,200,true,"data status berhasil di temukan",order)
+
+    if (whatsapp) {
+      filter.whatsapp = whatsapp  // ← tambah kondisi ini
+    }
+
+    const order = await Order.find(filter)
+    respon(res, 200, true, "data status berhasil di temukan", order)
     } catch (error) {
-        return respon(res,500,false,"gagal menemukan data status",error.message)
+        return respon(res, 500, false, "gagal menemukan data status", error.message)
     }
 }
 
