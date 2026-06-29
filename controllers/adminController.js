@@ -25,7 +25,7 @@ exports.postRegister = async (req,res) => {
             password
         })
         const token = jwt.sign(
-            { id: Admin._id },
+            { id: saveLogin._id },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
             );
@@ -35,6 +35,31 @@ exports.postRegister = async (req,res) => {
         })
     } catch (error) {
         respon(res,500,false,"ada kesalahan saat register",error.message)
+    }
+}
+
+exports.postLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        // 1. cari admin by email
+        const admin = await Admin.findOne({ email })
+        if (!admin) {
+            return respon(res, 404, false, "Admin tidak ditemukan")
+        }
+        // 2. cek password
+        const isMatch = await bcrypt.compare(password, admin.password)
+        if (!isMatch) {
+            return respon(res, 401, false, "Password salah")
+        }
+        // 3. buat token & return
+        const token = jwt.sign(
+            { id: saveLogin._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        )
+        respon(res, 200, true, "Login berhasil", { token })
+    } catch (error) {
+        respon(res, 500, false, "Server error", error.message)
     }
 }
 
