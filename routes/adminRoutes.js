@@ -4,7 +4,7 @@ const authMiddleware = require("../middleware/authAdmin")
 const router = express.Router()
 
 router.post("/register", adminController.postRegister)
-router.post("/login", authMiddleware, adminController.postLogin)
+router.post("/login", adminController.postLogin)
 router.get("/me", authMiddleware, adminController.getLoginMe)
 
 router.get("/order",authMiddleware, adminController.getAdminOrders)
