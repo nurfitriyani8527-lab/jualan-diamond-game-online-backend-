@@ -53,7 +53,7 @@ exports.postLogin = async (req, res) => {
         }
         // 3. buat token & return
         const token = jwt.sign(
-            { id: saveLogin._id },
+            { id: Admin._id },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }
         )
