@@ -166,17 +166,17 @@ exports.postAdminProducts = async (req,res) => {
 // PUT /admin/products/:id
 exports.updateAdminProducts = async (req,res) => {
     try {
-        const _id = req.params
+        const _id = req.params.id
         const { name, game, price } = req.body
         const search = await Product.findById(_id)
         if(!search){
             return respon(res,404,false,"data product tidak ditemukan",search)
         }
-        const updateData = await Product.updateOne({
-            name,
-            game,
-            price
-        })
+        const updateData = await Product.findByIdAndUpdate(
+            _id,
+            { name, game, price },
+            { new: true }
+        )
         respon(res,200,true,"data product berhasil di update",updateData)
     } catch (error) {
         respon(res,500,false,"terjadi kesalahan saat update data",error.message)
