@@ -99,7 +99,7 @@ exports.getAdminOrders = async (req,res) => {
 // GET /admin/orders/:id
 exports.getAdminOrdersById = async (req,res) => {
     try {
-        const _id = req.params
+        const _id = req.params._id
         const order = await Order.findById(_id)
         if(!order){
             return respon(res,404,false,"order kosong",order)
@@ -113,7 +113,7 @@ exports.getAdminOrdersById = async (req,res) => {
 // PUT /admin/orders/:id
 exports.updateAdminOrders = async (req,res) => {
     try {
-        const _id = req.params
+        const _id = req.params._id
         const { customer_name, game_id, whatsapp, items } = req.body
         const search = await Order.findById(_id)
         if(!search){
@@ -134,7 +134,7 @@ exports.updateAdminOrders = async (req,res) => {
 // DELETE /admin/orders/:id
 exports.deleteAdminOrders = async (req,res) => {
     try {
-        const _id = req.params
+        const _id = req.params._id
         const hapus = await Order.findByIdAndDelete(_id)
         if(!hapus){
             return respon(res,404,false,"data tidak ditemukan",hapus)
@@ -166,7 +166,7 @@ exports.postAdminProducts = async (req,res) => {
 // PUT /admin/products/:id
 exports.updateAdminProducts = async (req,res) => {
     try {
-        const _id = req.params.id
+        const _id = req.params._id
         const { name, game, price } = req.body
         const search = await Product.findById(_id)
         if(!search){
@@ -186,7 +186,7 @@ exports.updateAdminProducts = async (req,res) => {
 // DELETE /admin/products/:id
 exports.deleteAdminProducts = async (req,res) => {
     try {
-        const _id = req.params
+        const _id = req.params._id
         const hapus = await Product.findByIdAndDelete(_id)
         if(!hapus){
             return respon(res,404,false,"data tidak ditemukan",hapus)
