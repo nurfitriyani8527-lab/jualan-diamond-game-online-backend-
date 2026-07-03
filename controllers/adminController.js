@@ -334,7 +334,7 @@ exports.postAdminOrdersProcess = async (req,res) => {
         }
 
         order.status = "done"
-        await Order.save()
+        await order.save()
 
         const bot = await sendTelegramNotification(`
             ${order.customer_name}
