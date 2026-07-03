@@ -296,7 +296,7 @@ async function sendTelegramNotification(message){
 // POST /admin/orders/:id/resend-notif
 exports.postAdminOrdersResend = async (req,res) => {
     try {
-        const _id = req.params._id
+        const _id = req.params.id
         const order = await Order.findById(_id)
         
         if(!order){
@@ -323,7 +323,7 @@ exports.postAdminOrdersResend = async (req,res) => {
 // POST /admin/orders/:id/process
 exports.postAdminOrdersProcess = async (req,res) => {
     try {
-        const _id = req.params._id
+        const _id = req.params.id
         const order = await Order.findById(_id)
 
         if(!order){
