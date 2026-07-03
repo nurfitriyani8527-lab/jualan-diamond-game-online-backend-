@@ -19,7 +19,7 @@ router.delete("/product/:_id",authMiddleware, adminController.deleteAdminProduct
 
 router.get("/dashboard",authMiddleware, adminController.getAdminDashboard)
 router.get("/stats",authMiddleware, adminController.getAdminStats)
-router.post("/orderResend:_id",authMiddleware, adminController.postAdminOrdersResend)
-router.post("/orderProsses:_id",authMiddleware, adminController.postAdminOrdersProcess)
+router.post("/orderResend/:id",authMiddleware, adminController.postAdminOrdersResend)
+router.post("/orderProcess/:id",authMiddleware, adminController.postAdminOrdersProcess)
 
 module.exports = router
