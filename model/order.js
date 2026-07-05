@@ -7,12 +7,12 @@ const orderSchema = new Schema({
         required: true
     },
     game_id: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
     whatsapp: {
-        type: Number,
+        type: String,
         required: true
     },
     items: [{
