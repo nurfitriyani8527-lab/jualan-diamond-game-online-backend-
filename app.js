@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = process.env.PORT
@@ -5,18 +6,21 @@ const cors = require("cors")
 const {connectDB} = require("./config/databse")
 const publicRoutes = require("./routes/publicRoutes")
 const adminRoutes = require("./routes/adminRoutes") 
-require('dotenv').config()
+const helmet = require("helmet")
 
 connectDB()
 
 app.use(cors({
-  origin: '*', // Bisa dari mana saja
+  origin: 'http://localhost:5173', // bisa dari react dan kalau udah di hosting taruh url nya disini
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
 
-app.use(express.json())
+app.use(express.json({
+  limit: "10mb"
+}))
 
+app.use(helmet())
 app.use('/public', publicRoutes)
 app.use('/admin', adminRoutes)
 
