@@ -59,6 +59,8 @@ exports.postCheckout = async (req,res) => {
         if (!customer_name || !game_id || !whatsapp || !items.length) {
             return respon(res,400,false,"data tidak lengkap")
         }
+
+        
         let total = 0;
         let orderItems = [];
         

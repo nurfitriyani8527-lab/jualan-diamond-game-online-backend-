@@ -7,19 +7,21 @@ const {connectDB} = require("./config/databse")
 const publicRoutes = require("./routes/publicRoutes")
 const adminRoutes = require("./routes/adminRoutes") 
 const helmet = require("helmet")
+const { globalLimiter } = require("./middleware/limiter")
 
 connectDB()
 
 app.use(cors({
   origin: 'http://localhost:5173', // bisa dari react dan kalau udah di hosting taruh url nya disini
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json({
   limit: "10mb"
 }))
 
+app.use(globalLimiter)
 app.use(helmet())
 app.use('/public', publicRoutes)
 app.use('/admin', adminRoutes)
