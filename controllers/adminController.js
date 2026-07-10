@@ -367,5 +367,4 @@ exports.checkNickname = async (req,res) => {
     } catch (error) {
         respon(res,500,false,"ada kesahalahan saat mengambil data!",error.message)
     }
-    
 }

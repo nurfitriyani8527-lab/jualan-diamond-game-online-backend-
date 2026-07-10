@@ -1,4 +1,5 @@
 const crypto = require("crypto"); // signature untuk apigames
+require('dotenv').config()
 
 function generateApiGamesSignature() {
     return crypto
