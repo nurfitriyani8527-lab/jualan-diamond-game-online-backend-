@@ -14,13 +14,18 @@ async function checkNickname(userId) {
             signature
         }
     });
-
     const result = response.data;
 
+    console.log(result);
+    
+    if (!result.data) {
+        throw new Error(result.message);
+    }
+    
     if (!result.data.is_valid) {
         return null;
     }
-
+    
     return result.data.username;
 }
 
