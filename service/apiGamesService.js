@@ -26,7 +26,7 @@ async function checkNickname(userId) {
         return null;
     }
 
-    return result.data;
+    return result.data.username;
 }
 
 module.exports = {checkNickname}
