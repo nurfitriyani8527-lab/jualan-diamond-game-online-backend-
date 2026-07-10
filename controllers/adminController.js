@@ -6,7 +6,6 @@ const Product = require("../model/product")
 const Order = require("../model/order")
 const OrderItem = require("../model/orderItem")
 const axios = require("axios")
-const { checkNickname } = require("../service/apiGamesService")
 
 // POST /admin/login
 exports.postRegister = async (req,res) => {

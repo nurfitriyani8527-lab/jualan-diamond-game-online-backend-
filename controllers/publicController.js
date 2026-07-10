@@ -3,6 +3,7 @@ const Product = require("../model/product")
 const Order = require("../model/order")
 const OrderItem = require("../model/orderItem")
 const midtransClient = require("midtrans-client")
+const { checkNickname } = require("../service/apiGamesService")
 const axios = require("axios")
 require('dotenv').config()
 
