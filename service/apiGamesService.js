@@ -1,4 +1,5 @@
 const {generateApiGamesSignature} = require("../utils/signature") 
+const axios = require ("axios")
 require('dotenv').config()
 
 async function checkNickname(userId) {
