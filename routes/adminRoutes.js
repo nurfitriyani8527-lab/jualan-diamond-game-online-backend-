@@ -23,6 +23,4 @@ router.get("/stats",authMiddleware, adminController.getAdminStats)
 router.post("/orderResend/:id",authMiddleware, adminController.postAdminOrdersResend)
 router.post("/orderProcess/:id",authMiddleware, adminController.postAdminOrdersProcess)
 
-router.post("/check-nickname",authMiddleware, adminController.checkNickname);
-
 module.exports = router

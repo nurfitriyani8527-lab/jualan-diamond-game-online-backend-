@@ -150,3 +150,19 @@ exports.postPaymentWebhook = async (req,res) => {
         respon(res,500,false,"ada kesalahan",error.message)
     }
 }
+
+exports.checkNickname = async (req,res) => {
+    try {
+        const { userId } = req.body;
+
+        const nickname = await checkNickname(userId);
+
+        if (!nickname) {
+            return respon(res,404,false,"ID game tidak ditemukan")
+        }
+        
+        return respon(res,200,true,"data berhasil ditemukan",nickname)
+    } catch (error) {
+        respon(res,500,false,"ada kesahalahan saat mengambil data!",error.message)
+    }
+}
