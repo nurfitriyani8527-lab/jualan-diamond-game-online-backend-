@@ -6,6 +6,7 @@ const Product = require("../model/product")
 const Order = require("../model/order")
 const OrderItem = require("../model/orderItem")
 const axios = require("axios")
+const { checkNickname } = require("../services/apigamesService");
 
 // POST /admin/login
 exports.postRegister = async (req,res) => {
@@ -351,3 +352,24 @@ exports.postAdminOrdersProcess = async (req,res) => {
         respon(res,500,false,"order process error",error.message)
     }
 }
+
+exports.checkNickname = async (req,res) => {
+    try {
+        const { userId } = req.body;
+
+        const nickname = await checkNickname(userId);
+
+        if (!nickname) {
+            return respon(res,404,false,"ID game tidak ditemukan")
+        }
+
+        return respon(res,200,true,"data berhasil ditemukan")
+    } catch (error) {
+        respon(res,500,false,"ada kesahalahan saat mengambil data!",error.message)
+    }
+    
+}
+
+module.exports = {
+    CheckNickname
+};
