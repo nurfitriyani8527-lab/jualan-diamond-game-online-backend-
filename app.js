@@ -8,7 +8,6 @@ const publicRoutes = require("./routes/publicRoutes")
 const adminRoutes = require("./routes/adminRoutes") 
 const helmet = require("helmet")
 const { globalLimiter } = require("./middleware/limiter")
-const mongoSanitize = require("express-mongo-sanitize");
 
 connectDB()
 
@@ -24,7 +23,6 @@ app.use(express.json({
 
 app.use(globalLimiter)
 app.use(helmet())
-app.use(mongoSanitize());
 app.use('/public', publicRoutes)
 app.use('/admin', adminRoutes)
 
