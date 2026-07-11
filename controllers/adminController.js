@@ -40,9 +40,9 @@ const axios = require("axios")
 
 exports.postLogin = async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { password } = req.body
         // 1. cari admin by email
-        const admin = await Admin.findOne({ email })
+        const admin = await Admin.findOne({ email:req.body.email })
         if (!admin) {
             return respon(res, 404, false, "Admin tidak ditemukan")
         }
@@ -81,7 +81,7 @@ exports.getLoginMe = async (req,res) => {
 // GET /admin/orders?status=paid
 exports.getAdminOrders = async (req,res) => {
     try {
-        const { status } = req.query
+        const { status } = req.query.status
         let order
         if(status){
             order = await Order.find({
