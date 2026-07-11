@@ -3,9 +3,10 @@ const express = require('express')
 const authMiddleware = require("../middleware/authAdmin")
 const router = express.Router()
 const { loginLimiter, globalLimiter } = require("../middleware/limiter")
+const { loginValidation, validate } = require("../middleware/validator");
 
-router.post("/register", adminController.postRegister)
-router.post("/login", loginLimiter,adminController.postLogin)
+// router.post("/register", adminController.postRegister)
+router.post("/login", loginValidation, validate, loginLimiter,adminController.postLogin)
 router.get("/me", authMiddleware, adminController.getLoginMe)
 
 router.get("/order",authMiddleware, adminController.getAdminOrders)

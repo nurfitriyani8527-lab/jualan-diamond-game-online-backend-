@@ -8,35 +8,35 @@ const OrderItem = require("../model/orderItem")
 const axios = require("axios")
 
 // POST /admin/login
-exports.postRegister = async (req,res) => {
-    try {
-        const { name, email, password } = req.body
-        console.log(req.body)
-        if(!name || !email || !password){
-            return respon(res,401,false,"data tidak boleh kosong")
-        }
-        const duplikat = await Admin.findOne({email})
-            if(duplikat){
-                return respon(res,400,false,"Email sudah terdaftar",duplikat)
-            }
-        const saveLogin = await Admin.create({
-            name,
-            email,
-            password
-        })
-        const token = jwt.sign(
-            { id: saveLogin._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1d" }
-            );
-        respon(res,201,true,"berhasil buat akun!",{
-            user: saveLogin,
-            token
-        })
-    } catch (error) {
-        respon(res,500,false,"ada kesalahan saat register",error.message)
-    }
-}
+// exports.postRegister = async (req,res) => {
+//     try {
+//         const { name, email, password } = req.body
+//         console.log(req.body)
+//         if(!name || !email || !password){
+//             return respon(res,401,false,"data tidak boleh kosong")
+//         }
+//         const duplikat = await Admin.findOne({email})
+//             if(duplikat){
+//                 return respon(res,400,false,"Email sudah terdaftar",duplikat)
+//             }
+//         const saveLogin = await Admin.create({
+//             name,
+//             email,
+//             password
+//         })
+//         const token = jwt.sign(
+//             { id: saveLogin._id },
+//             process.env.JWT_SECRET,
+//             { expiresIn: "1d" }
+//             );
+//         respon(res,201,true,"berhasil buat akun!",{
+//             user: saveLogin,
+//             token
+//         })
+//     } catch (error) {
+//         respon(res,500,false,"ada kesalahan saat register",error.message)
+//     }
+// }
 
 exports.postLogin = async (req, res) => {
     try {
