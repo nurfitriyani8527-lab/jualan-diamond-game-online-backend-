@@ -27,12 +27,10 @@ async function checkNickname(gameCode,userId) {
     }
 
     return result.data.username;
-    console.log({
-    merchantId,
-    gameCode,
-    userId,
-    signature,
-    });
+    console.log("merchantId :", merchantId);
+    console.log("gameCode   :", gameCode);
+    console.log("userId     :", userId);
+    console.log("signature  :", signature);
     } catch (error) {
         console.log(error.response?.data); // <-- penting
         throw error;
