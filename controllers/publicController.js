@@ -98,13 +98,13 @@ exports.postCheckout = async (req,res) => {
                 order_id: orderId,
                 gross_amount: total,
             },
-            items_details: orderItems.map(item => ({
+            item_details: orderItems.map(item => ({
                 id: item.product_id.toString(),
                 price: item.price,
                 quantity: item.qty,
                 name: item.name
             })),
-            customer_detail:{
+            customer_details:{
                 first_name: customer_name,
                 phone: whatsapp,
             },
