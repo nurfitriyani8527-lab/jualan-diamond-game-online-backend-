@@ -12,7 +12,7 @@ const checkoutValidation = [
     body("game_id")
         .trim()
         .notEmpty()
-        .withMessage("Game ID wajib diisi")
+        .withMessage("Game ID wajib diisi"),
 
     body("whatsapp")
         .trim()
