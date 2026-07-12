@@ -2,39 +2,35 @@ const {generateApiGamesSignature} = require("../utils/signature")
 const axios = require ("axios")
 require('dotenv').config()
 
-async function checkNickname(gameCode,userId) {
+async function checkNickname(gameCode, userId) {
     const merchantId = process.env.APIGAMES_MERCHANT_ID;
-    const signature = generateApiGamesSignature()
+    const signature = generateApiGamesSignature();
 
-    const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/${gameCode}`;
+    // mapping gameCode internal -> endpoint apigames
+    const endpointMap = {
+        ml: "mobilelegend",
+        ff: "freefire",
+    };
 
-    try {
+    const endpoint = endpointMap[gameCode];
+    if (!endpoint) {
+        throw new Error("Game tidak didukung");
+    }
+
+    const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/${endpoint}`;
+
     const response = await axios.get(url, {
-        params: {
-            user_id: userId,
-            signature,
-        },
+        params: { user_id: userId, signature }
     });
-
     const result = response.data;
 
     if (!result.data) {
         throw new Error(result.message);
     }
-
     if (!result.data.is_valid) {
         return null;
     }
-
     return result.data.username;
-    console.log("merchantId :", merchantId);
-    console.log("gameCode   :", gameCode);
-    console.log("userId     :", userId);
-    console.log("signature  :", signature);
-    } catch (error) {
-        console.log(error.response?.data); // <-- penting
-        throw error;
-    }
 }
 
 module.exports = {checkNickname}

@@ -267,33 +267,18 @@ ${order.status.toUpperCase()}
     }
 };
 
-async function checkNickname(gameCode, userId) {
-    const merchantId = process.env.APIGAMES_MERCHANT_ID;
-    const signature = generateApiGamesSignature();
+exports.checkNickname = async (req,res) => {
+    try {
+        const { gameCode, userId } = req.body;
 
-    // mapping gameCode internal -> endpoint apigames
-    const endpointMap = {
-        ml: "mobilelegend",
-        ff: "freefire",
-    };
+        const nickname = await checkNickname(gameCode, userId);
 
-    const endpoint = endpointMap[gameCode];
-    if (!endpoint) {
-        throw new Error("Game tidak didukung");
+        if (!nickname) {
+            return respon(res,404,false,"ID game tidak ditemukan")
+        }
+        
+        return respon(res,200,true,"data berhasil ditemukan",nickname)
+    } catch (error) {
+        respon(res,500,false,"ada kesahalahan saat mengambil data!",error.message)
     }
-
-    const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/${endpoint}`;
-
-    const response = await axios.get(url, {
-        params: { user_id: userId, signature }
-    });
-    const result = response.data;
-
-    if (!result.data) {
-        throw new Error(result.message);
-    }
-    if (!result.data.is_valid) {
-        return null;
-    }
-    return result.data.username;
 }
