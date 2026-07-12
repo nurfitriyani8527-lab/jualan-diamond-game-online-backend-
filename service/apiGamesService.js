@@ -8,15 +8,15 @@ async function checkNickname(gameCode,userId) {
 
     const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/${gameCode}`;
 
+    try {
     const response = await axios.get(url, {
         params: {
             user_id: userId,
-            signature
-        }
+            signature,
+        },
     });
-    const result = response.data;
 
-    console.log(result);
+    const result = response.data;
 
     if (!result.data) {
         throw new Error(result.message);
@@ -27,6 +27,16 @@ async function checkNickname(gameCode,userId) {
     }
 
     return result.data.username;
+    console.log({
+    merchantId,
+    gameCode,
+    userId,
+    signature,
+    });
+    } catch (error) {
+        console.log(error.response?.data); // <-- penting
+        throw error;
+    }
 }
 
 module.exports = {checkNickname}
