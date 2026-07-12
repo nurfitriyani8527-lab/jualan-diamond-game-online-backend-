@@ -13,8 +13,6 @@ const checkoutValidation = [
         .trim()
         .notEmpty()
         .withMessage("Game ID wajib diisi")
-        .isNumeric()
-        .withMessage("Game ID hanya boleh angka"),
 
     body("whatsapp")
         .trim()
