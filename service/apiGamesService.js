@@ -2,11 +2,11 @@ const {generateApiGamesSignature} = require("../utils/signature")
 const axios = require ("axios")
 require('dotenv').config()
 
-async function checkNickname(userId) {
+async function checkNickname(gameCodeuserId) {
     const merchantId = process.env.APIGAMES_MERCHANT_ID;
     const signature = generateApiGamesSignature()
 
-    const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/mobilelegend`;
+    const url = `https://v1.apigames.id/merchant/${merchantId}/cek-username/${gameCode}`;
 
     const response = await axios.get(url, {
         params: {

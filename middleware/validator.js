@@ -27,6 +27,11 @@ const checkoutValidation = [
         .isArray({ min: 1 })
         .withMessage("Minimal pilih satu produk"),
 
+    body("gameCode")
+        .notEmpty()
+        .withMessage("Game wajib dipilih")
+        .isIn(["ml", "ff"])
+        .withMessage("Game tidak didukung"),
 ];
 
 const loginValidation = [

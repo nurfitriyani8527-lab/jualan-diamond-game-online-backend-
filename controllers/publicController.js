@@ -269,9 +269,9 @@ ${order.status.toUpperCase()}
 
 exports.checkNickname = async (req,res) => {
     try {
-        const { userId } = req.body;
+        const { gameCode, userId } = req.body;
 
-        const nickname = await checkNickname(userId);
+        const nickname = await checkNickname(gameCode, userId);
 
         if (!nickname) {
             return respon(res,404,false,"ID game tidak ditemukan")
