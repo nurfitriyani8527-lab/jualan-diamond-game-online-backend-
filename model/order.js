@@ -8,8 +8,7 @@ const orderSchema = new Schema({
     },
     game_id: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     whatsapp: {
         type: String,
