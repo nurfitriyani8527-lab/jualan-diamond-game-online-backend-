@@ -12,7 +12,7 @@ const { globalLimiter } = require("./middleware/limiter")
 connectDB()
 
 app.use(cors({
-  origin: 'http://localhost:5173', // bisa dari react dan kalau udah di hosting taruh url nya disini
+  origin: 'https://top-up-zone-iota.vercel.app/trackorder', // bisa dari react dan kalau udah di hosting taruh url nya disini
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
