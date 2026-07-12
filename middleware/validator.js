@@ -44,6 +44,35 @@ const loginValidation = [
         .isLength({min: 8})
 ]
 
+const contactValidation = [
+    body("name")
+        .trim()
+        .notEmpty()
+        .withMessage("Nama wajib diisi")
+        .isLength({ min: 3, max: 100 })
+        .withMessage("Nama minimal 3 karakter"),
+
+    body("email")
+        .trim()
+        .notEmpty()
+        .withMessage("Email wajib diisi")
+        .isEmail()
+        .withMessage("Format email tidak valid"),
+
+    body("subject")
+        .trim()
+        .notEmpty()
+        .withMessage("Subject wajib diisi")
+        .isLength({ min: 5, max: 100 })
+        .withMessage("Subject minimal 5 karakter"),
+
+    body("message")
+        .trim()
+        .notEmpty()
+        .withMessage("Pesan wajib diisi")
+        .isLength({ min: 10, max: 1000 })
+        .withMessage("Pesan minimal 10 karakter"),
+];
 
 const validate = (req, res, next) => {
 
@@ -65,5 +94,6 @@ const validate = (req, res, next) => {
 module.exports = {
     checkoutValidation,
     loginValidation,
+    contactValidation,
     validate
 };

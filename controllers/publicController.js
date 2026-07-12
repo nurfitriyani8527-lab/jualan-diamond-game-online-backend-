@@ -2,6 +2,7 @@ const respon = require("../utils/response")
 const Product = require("../model/product")
 const Order = require("../model/order")
 const OrderItem = require("../model/orderItem")
+const Contact = require("../model/contact")
 const midtransClient = require("midtrans-client")
 const { checkNickname } = require("../service/apiGamesService")
 const axios = require("axios")
@@ -61,7 +62,6 @@ exports.postCheckout = async (req,res) => {
             return respon(res,400,false,"data tidak lengkap")
         }
 
-        
         let total = 0;
         let orderItems = [];
         
@@ -120,6 +120,50 @@ exports.postCheckout = async (req,res) => {
     }
 }
 
+exports.postContact = async (req,res) => {
+    try {
+        const { name, email, subject, message } = req.body;
+
+        if (!name || !email || !subject || !message) {
+            return respon(res,400,false,"semua field wajib diisi")
+        }
+
+        // Simpan ke database
+        const contact = await Contact.create({
+            name,
+            email,
+            subject,
+            message
+        });
+
+        await sendTelegramNotification(`
+            📨 *CONTACT BARU*
+
+            ━━━━━━━━━━━━━━
+
+            👤 *Nama*
+            ${name}
+
+            📧 *Email*
+            ${email}
+
+            📝 *Subjek*
+            ${subject}
+
+            💬 *Pesan*
+            ${message}
+
+            ━━━━━━━━━━━━━━
+            🕒 ${new Date().toLocaleString("id-ID")}
+        `);
+
+        return respon(res,201,true,"pesan berhasil dikirim ke admin",contact)
+
+    } catch (error) {
+        return respon(res,500,false,"terjadi kesalahan pada server",error.message)
+    }
+}
+
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 
@@ -136,21 +180,92 @@ async function sendTelegramNotification(message){
     }
 }
 
-exports.postPaymentWebhook = async (req,res) => {
+exports.postPaymentWebhook = async (req, res) => {
     try {
-        const { order_id, transaction_status, fraud_status } = req.body
-        const notificationMessage = `
-            Order ID: ${order_id}
-            Status: ${transaction_status}
-            Fraud Check: ${fraud_status}
-            Waktu: ${new Date().toLocaleString("id-ID")}
-            `
-        sendTelegramNotification(notificationMessage)
-        respon(res,200,true,"berhasil mengirim notifikasi")
+        const { order_id, transaction_status, fraud_status } = req.body;
+
+        // Cari order
+        const order = await Order.findOne({
+            midtrans_order_id: order_id,
+        });
+
+        if (!order) {
+            return respon(res, 404, false, "Order tidak ditemukan");
+        }
+
+        // Tentukan status
+        if (
+            transaction_status === "capture" &&
+            fraud_status === "accept"
+        ) {
+            order.status = "paid";
+        } else if (transaction_status === "settlement") {
+            order.status = "paid";
+        } else if (transaction_status === "pending") {
+            order.status = "pending";
+        } else if (
+            transaction_status === "deny" ||
+            transaction_status === "cancel" ||
+            transaction_status === "expire"
+        ) {
+            order.status = "failed";
+        }
+
+        await order.save();
+
+        // Kirim Telegram hanya jika pembayaran berhasil
+        if (order.status === "paid") {
+            const notificationMessage = `
+✅ *PEMBAYARAN BERHASIL*
+
+━━━━━━━━━━━━━━
+
+👤 *Nama*
+${order.customer_name}
+
+🎮 *Game ID*
+${order.game_id}
+
+📱 *WhatsApp*
+${order.whatsapp}
+
+💰 *Total*
+Rp ${order.total_price.toLocaleString("id-ID")}
+
+🆔 *Order ID*
+${order.midtrans_order_id}
+
+📌 *Status*
+${order.status.toUpperCase()}
+
+🕒 ${new Date().toLocaleString("id-ID")}
+
+━━━━━━━━━━━━━━
+`;
+
+            await sendTelegramNotification(notificationMessage);
+        }
+
+        return respon(
+            res,
+            200,
+            true,
+            "Webhook berhasil diproses",
+            order
+        );
+
     } catch (error) {
-        respon(res,500,false,"ada kesalahan",error.message)
+        console.error(error);
+
+        return respon(
+            res,
+            500,
+            false,
+            "Terjadi kesalahan pada server",
+            error.message
+        );
     }
-}
+};
 
 exports.checkNickname = async (req,res) => {
     try {
