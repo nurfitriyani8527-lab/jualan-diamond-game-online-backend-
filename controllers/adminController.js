@@ -81,7 +81,7 @@ exports.getLoginMe = async (req,res) => {
 // GET /admin/orders?status=paid
 exports.getAdminOrders = async (req,res) => {
     try {
-        const { status } = req.query.status
+        const status = req.query.status
         let order
         if(status){
             order = await Order.find({
